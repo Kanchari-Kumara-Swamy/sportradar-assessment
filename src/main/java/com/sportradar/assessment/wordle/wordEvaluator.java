@@ -14,11 +14,13 @@ public class wordEvaluator {
 
         List<Color> result = new ArrayList<>(Collections.nCopies(5, Color.GRAY));
         char[] solutionChars = solution.toCharArray();
+        boolean[] occupied = new boolean[5];
 
         // checking for green letter
         for (int i = 0; i < 5; i++) {
             if (guess.charAt(i) == solution.charAt(i)) {
                 result.set(i, Color.GREEN);
+                occupied[i] = true;
             }
         }
 
@@ -26,8 +28,9 @@ public class wordEvaluator {
         for (int i = 0; i < 5; i++) {
             if (result.get(i) == Color.GRAY) {
                 for (int j = 0; j < 5; j++) {
-                    if (guess.charAt(i) == solutionChars[j]) {
+                    if (!occupied[j] && guess.charAt(i) == solutionChars[j]) {
                         result.set(i, Color.YELLOW);
+                        occupied[j] = true;
                         break;
                     }
                 }

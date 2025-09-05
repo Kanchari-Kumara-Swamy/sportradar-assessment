@@ -39,8 +39,9 @@ public class wordEvaluatorTest {
     void yellowNotOvercounted() {
         wordEvaluator evaluator = new wordEvaluator();
         List<Color> result = evaluator.evaluate("poppy", "apple");
-        assertEquals(Color.GREEN, result.get(0)); // first P
-        assertEquals(Color.GRAY, result.get(1));  // second P
+        assertEquals(Color.YELLOW, result.get(0)); // first P
+        assertEquals(Color.GREEN, result.get(2)); // second P
+        assertEquals(Color.GRAY, result.get(3));  // third P, coz its excess
     }
 }
 
