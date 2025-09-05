@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class wordEvaluator {
+public class WordEvaluator {
 
     public List<Color> evaluate(String guess, String solution) {
         guess = guess.toLowerCase();

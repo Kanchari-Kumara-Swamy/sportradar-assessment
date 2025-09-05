@@ -6,11 +6,11 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class wordEvaluatorTest {
+public class WordEvaluatorTest {
     
     @Test
     void allCorrect() {
-        wordEvaluator evaluator = new wordEvaluator();
+        WordEvaluator evaluator = new WordEvaluator();
         List<Color> result = evaluator.evaluate("water", "water");
         assertEquals(List.of(
                 Color.GREEN,
@@ -23,7 +23,7 @@ public class wordEvaluatorTest {
 
     @Test
     void duplicateLetterRule() {
-        wordEvaluator evaluator = new wordEvaluator();
+        WordEvaluator evaluator = new WordEvaluator();
         List<Color> result = evaluator.evaluate("otter", "water");
         // Expect O=gray, T=gray, T=green, E=green, R=green
         assertEquals(List.of(
@@ -37,7 +37,7 @@ public class wordEvaluatorTest {
 
     @Test
     void yellowNotOvercounted() {
-        wordEvaluator evaluator = new wordEvaluator();
+        WordEvaluator evaluator = new WordEvaluator();
         List<Color> result = evaluator.evaluate("poppy", "apple");
         assertEquals(Color.YELLOW, result.get(0)); // first P
         assertEquals(Color.GREEN, result.get(2)); // second P
