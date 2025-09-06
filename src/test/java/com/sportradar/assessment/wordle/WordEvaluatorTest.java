@@ -2,6 +2,7 @@ package com.sportradar.assessment.wordle;
 
 
 import com.sportradar.assessment.wordle.enums.Color;
+import com.sportradar.assessment.wordle.service.WordEvaluator;
 import org.junit.jupiter.api.Test;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;

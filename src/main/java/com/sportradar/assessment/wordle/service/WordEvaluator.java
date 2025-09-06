@@ -1,4 +1,4 @@
-package com.sportradar.assessment.wordle;
+package com.sportradar.assessment.wordle.service;
 
 import com.sportradar.assessment.wordle.enums.Color;
 

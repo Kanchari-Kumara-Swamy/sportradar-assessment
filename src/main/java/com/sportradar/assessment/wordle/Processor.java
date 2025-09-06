@@ -1,6 +1,15 @@
 package com.sportradar.assessment.wordle;
 
+import com.sportradar.assessment.wordle.domain.WordEntry;
+import com.sportradar.assessment.wordle.enums.Color;
 import com.sportradar.assessment.wordle.repository.WordRepository;
+import com.sportradar.assessment.wordle.repository.WordRepositoryImpl;
+import com.sportradar.assessment.wordle.service.WordEvaluator;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+import java.util.Scanner;
 
 public class Processor {
 
@@ -10,13 +19,80 @@ public class Processor {
     private final WordEvaluator evaluator;
 
     public Processor() {
-        this.repository = new WordRepositoryImpl("classpath:words.txt");
+        this.repository = new WordRepositoryImpl("src/main/resources/words.txt");
         this.evaluator = new WordEvaluator();
     }
 
-    public void play(){
-        repository.loadWords();
-        evaluator.evaluate("apple", "apple");
+    public void play() {
+        List<WordEntry> wordEntries = repository.loadWords();
+        if (wordEntries.isEmpty()) {
+            System.out.println("word list is empty to load");
+        }
+
+        Scanner scanner = new Scanner(System.in);
+        WordEntry entry = wordEntries.get(new Random().nextInt(wordEntries.size()));
+
+        //introducing rules
+        gameRules();
+
+        System.out.println("Are you ready? y/n :");
+
+        if (!consent(scanner)) return;
+
+        System.out.println(entry);
+
+        for (int i = 5; i > 0; i--) {
+            System.out.printf("You have %d attempts, Guess the word : \n", i);
+
+            if (i == 1) {
+                System.out.println("Do you need a hint?, y/n:");
+                if (!consent(scanner)) return;
+                System.out.println("Hint: \"" + entry.hint() + "\"");
+            }
+            String guess = scanner.next().trim().toLowerCase();
+
+            if (guess.length() < 5) {
+                System.out.println("Please enter exactly 5 letters.");
+                i++;
+                continue;
+            }
+            List<Color> evaluate = evaluator.evaluate(guess, entry.word());
+            System.out.println(evaluate); //todo: need to add some letter coloring logic
+
+            if (evaluate.equals(Collections.nCopies(5, Color.GREEN).stream().toList()) ) {
+                System.out.println(" \\(^_^)/  Bravo! You win!");
+
+            } else if (i ==1) {
+                System.out.println("you loose :-(");
+            }
+        }
+
+    }
+
+    private boolean consent(Scanner scanner) {
+        Character consent = scanner.next().toLowerCase().trim().charAt(0);
+        return consent.equals('y');
+    }
+
+    private void gameRules() {
+
+        try {
+            System.out.println("Welcome to Wordle (CLI Edition)!");
+
+            Thread.sleep(2000);
+            System.out.println("How to play:");
+
+            Thread.sleep(2000);
+            System.out.println("You need to guess a 5-letter word in " + MAX_ATTEMPTS + " tries.");
+
+            Thread.sleep(2000);
+            System.out.println("Green = correct letter & position, Yellow = correct letter but wrong place.");
+
+            Thread.sleep(2000);
+
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

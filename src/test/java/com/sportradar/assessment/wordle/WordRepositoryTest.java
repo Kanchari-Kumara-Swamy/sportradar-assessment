@@ -2,6 +2,7 @@ package com.sportradar.assessment.wordle;
 
 import com.sportradar.assessment.wordle.domain.WordEntry;
 import com.sportradar.assessment.wordle.repository.WordRepository;
+import com.sportradar.assessment.wordle.repository.WordRepositoryImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -1,7 +1,6 @@
-package com.sportradar.assessment.wordle;
+package com.sportradar.assessment.wordle.repository;
 
 import com.sportradar.assessment.wordle.domain.WordEntry;
-import com.sportradar.assessment.wordle.repository.WordRepository;
 
 import java.io.IOException;
 import java.nio.file.Files;

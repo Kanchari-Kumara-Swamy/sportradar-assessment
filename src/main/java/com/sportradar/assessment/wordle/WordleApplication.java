@@ -4,7 +4,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.core.metrics.ApplicationStartup;
+
+import java.net.URL;
 
 @SpringBootApplication
 public class WordleApplication {
@@ -12,7 +16,10 @@ public class WordleApplication {
     private static final Logger log = LoggerFactory.getLogger(WordleApplication.class);
 
     public static void main(String[] args) {
-		SpringApplication.run(WordleApplication.class, args);
+        SpringApplication app = new SpringApplication(WordleApplication.class);
+        app.setWebApplicationType(WebApplicationType.NONE);
+        app.run();
+
         log.info("""
                 
                 
@@ -26,6 +33,8 @@ public class WordleApplication {
                 
                
                 """);
+
+        new Processor().play();
 	}
 
 }
