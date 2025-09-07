@@ -4,6 +4,7 @@ import com.sportradar.assessment.wordle.domain.WordEntry;
 import com.sportradar.assessment.wordle.enums.Color;
 import com.sportradar.assessment.wordle.repository.WordRepository;
 import com.sportradar.assessment.wordle.repository.WordRepositoryImpl;
+import com.sportradar.assessment.wordle.service.FeedbackRender;
 import com.sportradar.assessment.wordle.service.WordEvaluator;
 
 import java.util.Collections;
@@ -17,11 +18,23 @@ public class Processor {
 
     private final WordRepository repository;
     private final WordEvaluator evaluator;
+    private final FeedbackRender feedback;
 
     public Processor() {
         this.repository = new WordRepositoryImpl("src/main/resources/words.txt");
         this.evaluator = new WordEvaluator();
+        this.feedback = new FeedbackRender();
     }
+
+    //testing
+    public Processor(WordRepository wordRepository) {
+        this.repository = wordRepository;
+        this.evaluator = new WordEvaluator();
+        this.feedback = new FeedbackRender();
+    }
+
+
+
 
     public void play() {
         List<WordEntry> wordEntries = repository.loadWords();
@@ -34,34 +47,33 @@ public class Processor {
 
         //introducing rules
         gameRules();
-
         System.out.println("Are you ready? y/n :");
 
+        //gets user consent
         if (!consent(scanner)) return;
 
-        System.out.println(entry);
-
-        for (int i = 5; i > 0; i--) {
-            System.out.printf("You have %d attempts, Guess the word : \n", i);
+        for (int i = MAX_ATTEMPTS; i > 0; i--) {
+            System.out.printf("You have %d ❤️, Guess the word : \n", i);
 
             if (i == 1) {
                 System.out.println("Do you need a hint?, y/n:");
-                if (!consent(scanner)) return;
-                System.out.println("Hint: \"" + entry.hint() + "\"");
+                if (consent(scanner)) System.out.println("Hint: \"" + entry.hint() + "\"");
             }
             String guess = scanner.next().trim().toLowerCase();
 
-            if (guess.length() < 5) {
+            if (guess.length() < MAX_ATTEMPTS) {
                 System.out.println("Please enter exactly 5 letters.");
                 i++;
                 continue;
             }
             List<Color> evaluate = evaluator.evaluate(guess, entry.word());
-            System.out.println(evaluate); //todo: need to add some letter coloring logic
+            String renderWord = feedback.render(guess, evaluate);
 
-            if (evaluate.equals(Collections.nCopies(5, Color.GREEN).stream().toList()) ) {
-                System.out.println(" \\(^_^)/  Bravo! You win!");
+            System.out.println(renderWord);
 
+            if (guess.equals(entry.word())) {
+                System.out.println("\\(^_^)/  Bravo! You win!");
+                return;
             } else if (i ==1) {
                 System.out.println("you loose :-(");
             }
