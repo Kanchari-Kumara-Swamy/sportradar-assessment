@@ -6,12 +6,13 @@ import com.sportradar.assessment.wordle.repository.WordRepository;
 import com.sportradar.assessment.wordle.repository.WordRepositoryImpl;
 import com.sportradar.assessment.wordle.service.FeedbackRender;
 import com.sportradar.assessment.wordle.service.WordEvaluator;
+import lombok.AllArgsConstructor;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
+@AllArgsConstructor
 public class Processor {
 
     private static final int MAX_ATTEMPTS = 5;
@@ -20,8 +21,8 @@ public class Processor {
     private final WordEvaluator evaluator;
     private final FeedbackRender feedback;
 
-    public Processor() {
-        this.repository = new WordRepositoryImpl("src/main/resources/words.txt");
+    public Processor(String filepath) {
+        this.repository = new WordRepositoryImpl(filepath);
         this.evaluator = new WordEvaluator();
         this.feedback = new FeedbackRender();
     }

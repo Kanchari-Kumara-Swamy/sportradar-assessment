@@ -1,14 +1,11 @@
 package com.sportradar.assessment.wordle;
 
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.core.metrics.ApplicationStartup;
-
-import java.net.URL;
+import org.springframework.context.ConfigurableApplicationContext;
 
 @SpringBootApplication
 public class WordleApplication {
@@ -18,7 +15,7 @@ public class WordleApplication {
     public static void main(String[] args) {
         SpringApplication app = new SpringApplication(WordleApplication.class);
         app.setWebApplicationType(WebApplicationType.NONE);
-        app.run();
+        ConfigurableApplicationContext context = app.run(args);
 
         log.info("""
                 
@@ -34,7 +31,9 @@ public class WordleApplication {
                
                 """);
 
-        new Processor().play();
+        String filepath = context.getEnvironment().getProperty("words.path", "words.txt");
+        Processor processor = new Processor(filepath);
+        processor.play();
 	}
 
 }

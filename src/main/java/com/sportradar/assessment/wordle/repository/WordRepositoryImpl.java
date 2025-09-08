@@ -2,10 +2,11 @@ package com.sportradar.assessment.wordle.repository;
 
 import com.sportradar.assessment.wordle.domain.WordEntry;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.InputStreamReader;
 import java.util.List;
+import java.util.Objects;
 
 public class WordRepositoryImpl implements WordRepository {
 
@@ -17,8 +18,12 @@ public class WordRepositoryImpl implements WordRepository {
 
     @Override
     public List<WordEntry> loadWords() {
-        try {
-            return Files.readAllLines(Paths.get(filePath)).stream()
+
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(Objects
+                .requireNonNull(getClass()
+                        .getClassLoader()
+                        .getResourceAsStream(filePath))))) {
+            return br.lines()
                     .map(String::trim)
                     .filter(line -> line.contains(","))
                     .map(line -> {
@@ -27,7 +32,7 @@ public class WordRepositoryImpl implements WordRepository {
                     })
                     .toList();
         } catch (IOException e) {
-            throw new RuntimeException("Failed to load words from " + filePath, e);
+            throw new RuntimeException(e);
         }
     }
 }

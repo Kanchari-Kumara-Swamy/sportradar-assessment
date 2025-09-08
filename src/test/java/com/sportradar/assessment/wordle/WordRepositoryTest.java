@@ -3,28 +3,21 @@ package com.sportradar.assessment.wordle;
 import com.sportradar.assessment.wordle.domain.WordEntry;
 import com.sportradar.assessment.wordle.repository.WordRepository;
 import com.sportradar.assessment.wordle.repository.WordRepositoryImpl;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class WordRepositoryTest {
 
-    private List<WordEntry> entries;
-
-    @BeforeEach
-    public void loadWords(){
-        WordRepositoryImpl repo = new WordRepositoryImpl("src/main/resources/words.txt");
-        entries = repo.loadWords();
-    }
-
     @Test
     void repositoryLoadsWordEntriesCorrectly() throws IOException {
+
+        WordRepositoryImpl repo = new WordRepositoryImpl("words.txt");
+        List<WordEntry> entries = repo.loadWords();
 
         assertEquals(7, entries.size());
 
@@ -39,22 +32,15 @@ public class WordRepositoryTest {
     }
 
     @Test
-    void repositoryIgnoresInvalidLines() throws IOException {
+    void repositoryIgnoresInvalidLines() throws IOException, InterruptedException {
 
-        Path tempFile = Files.createTempFile("temp", ".txt");
-        Files.writeString(tempFile, """
-                water, the thing that keeps you hydrated
-                invalidlinewithoutcomma
-                pizza, could be your favourite dish
-                """);
-
-        WordRepository repo = new WordRepositoryImpl(tempFile.toString());
+        File tempFile = new File("test.txt");
+        WordRepository repo = new WordRepositoryImpl(tempFile.getName());
         List<WordEntry> entries = repo.loadWords();
 
         assertEquals(2, entries.size()); // only valid lines
         assertEquals("water", entries.get(0).word());
         assertEquals("pizza", entries.get(1).word());
 
-        Files.deleteIfExists(tempFile);
     }
 }
