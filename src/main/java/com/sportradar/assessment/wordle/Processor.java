@@ -27,16 +27,6 @@ public class Processor {
         this.feedback = new FeedbackRender();
     }
 
-    //testing
-    public Processor(WordRepository wordRepository) {
-        this.repository = wordRepository;
-        this.evaluator = new WordEvaluator();
-        this.feedback = new FeedbackRender();
-    }
-
-
-
-
     public void play() {
         List<WordEntry> wordEntries = repository.loadWords();
         if (wordEntries.isEmpty()) {

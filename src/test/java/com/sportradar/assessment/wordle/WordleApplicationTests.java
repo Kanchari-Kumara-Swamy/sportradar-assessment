@@ -2,6 +2,8 @@ package com.sportradar.assessment.wordle;
 
 import com.sportradar.assessment.wordle.domain.WordEntry;
 import com.sportradar.assessment.wordle.repository.WordRepository;
+import com.sportradar.assessment.wordle.service.FeedbackRender;
+import com.sportradar.assessment.wordle.service.WordEvaluator;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,6 +27,12 @@ class WordleApplicationTests {
 
     @Mock
     private WordRepository repo;
+
+    @Mock
+    private WordEvaluator evaluator;
+
+    @Mock
+    private FeedbackRender feedbackRender;
 
     @InjectMocks
     private Processor processor;

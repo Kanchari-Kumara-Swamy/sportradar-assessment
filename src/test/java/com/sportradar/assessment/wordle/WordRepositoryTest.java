@@ -22,13 +22,13 @@ public class WordRepositoryTest {
         assertEquals(7, entries.size());
 
         assertEquals("water", entries.get(0).word());
-        assertEquals("the thing that keeps you hydrated", entries.get(0).hint());
+        assertEquals("essential for life and your daily hydration", entries.get(0).hint());
 
         assertEquals("otter", entries.get(1).word());
-        assertEquals("some people keep it as a pet", entries.get(1).hint());
+        assertEquals("playful river mammal known for using tools", entries.get(1).hint());
 
         assertEquals("pizza", entries.get(3).word());
-        assertEquals("could be your favourite dish", entries.get(3).hint());
+        assertEquals("cheesy favorite that comes in many toppings", entries.get(3).hint());
     }
 
     @Test
